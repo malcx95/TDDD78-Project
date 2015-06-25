@@ -1,26 +1,36 @@
 package se.liu.ida.malvi108.tddd78.project.gui.dialogs;
 
-import se.liu.ida.malvi108.tddd78.project.gui.main_gui.MainFrame;
-import se.liu.ida.malvi108.tddd78.project.reminders.Reminder;
-
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.applet.Applet;
 import java.applet.AudioClip;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 class RingtoneSelector extends JComboBox<RingToneOption>
 {
-    private AudioClip customOption;
+    /**
+     * Sound similar to that of a watch-alarm.
+     */
+    public final static AudioClip BLIP = Applet.newAudioClip(
+	    RingtoneSelector.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/blipblip.wav"));
+    /**
+     * The sound of a glass being striked.
+     */
+    public final static AudioClip PLING = Applet.newAudioClip(
+	    RingtoneSelector.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/pling.wav"));
+    /**
+     * The sound of a simple whistle.
+     */
+    public final static AudioClip WHISTLE = Applet.newAudioClip(
+	    RingtoneSelector.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/whistle.wav"));
+    /**
+     * The sound of someone saying 'The time has come, to perform the task you set out to perform'.
+     */
+    public final static AudioClip TIME_HAS_COME = Applet.newAudioClip(
+	    RingtoneSelector.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/timehascome.wav"));
 
     RingtoneSelector(){
 	super(RingToneOption.values());
-	customOption = null;
-	addActionListener(new ActionListener()
+	/*addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent e) {
 		if (getSelectedItem() == RingToneOption.CUSTOM){
@@ -41,14 +51,14 @@ class RingtoneSelector extends JComboBox<RingToneOption>
 		    }
 		}
 	    }
-	});
+	});*/
     }
 
-    private void handleInvalidFile() {
+    /*private void handleInvalidFile() {
 	JOptionPane.showMessageDialog(null, "Filen du valt stöds inte av PlanIt!", "Fel", JOptionPane.ERROR_MESSAGE, MainFrame.PLAN_IT_ERROR);
-    }
+    }*/
 
-    private void loadAudioClip(File audioFile){
+    /*private void loadAudioClip(File audioFile){
 	try{
 	    URL url = audioFile.toURI().toURL();
 	    customOption = Applet.newAudioClip(url);
@@ -56,22 +66,20 @@ class RingtoneSelector extends JComboBox<RingToneOption>
 	    JOptionPane.showMessageDialog(null, "Ljudklippet kunde inte läsas in", "Fel", JOptionPane.ERROR_MESSAGE, MainFrame.PLAN_IT_ERROR);
 	    setSelectedItem(RingToneOption.NONE);
 	}
-    }
+    }*/
 
     AudioClip getSelectedRingtone(){
 	switch ((RingToneOption) getSelectedItem()){
 	    case NONE:
 		return null;
-	    case CUSTOM:
-		return customOption;
 	    case BLIP:
-		return Reminder.BLIP;
+		return BLIP;
 	    case PLING:
-		return Reminder.PLING;
+		return PLING;
 	    case WHISTLE:
-		return Reminder.WHISTLE;
+		return WHISTLE;
 	    case TIME_HAS_COME:
-		return Reminder.TIME_HAS_COME;
+		return TIME_HAS_COME;
 	    default:
 		return null;
 	}

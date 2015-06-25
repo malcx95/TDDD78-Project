@@ -118,7 +118,7 @@ public final class TimeEditImporter
 		break;
 	    }
 	}
-	try{
+	try {
 	    builder.delete(builder.length() - 2, builder.length());
 	} catch (StringIndexOutOfBoundsException ignore){
 	    return "";

@@ -5,30 +5,15 @@ import se.liu.ida.malvi108.tddd78.project.time.Date;
 import se.liu.ida.malvi108.tddd78.project.time.TimePoint;
 
 import javax.swing.*;
-import java.applet.Applet;
 import java.applet.AudioClip;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Reminder
+public class Reminder implements Serializable
 {
-    /**
-     * Sound similar to that of a watch-alarm.
-     */
-    public final static AudioClip BLIP = Applet.newAudioClip(Reminder.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/blipblip.wav"));
-    /**
-     * The sound of a glass being striked.
-     */
-    public final static AudioClip PLING = Applet.newAudioClip(Reminder.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/pling.wav"));
-    /**
-     * The sound of a simple whistle.
-     */
-    public final static AudioClip WHISTLE = Applet.newAudioClip(Reminder.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/whistle.wav"));
-    /**
-     * The sound of someone saying 'The time has come, to perform the task you set out to perform'.
-     */
-    public final static AudioClip TIME_HAS_COME = Applet.newAudioClip(Reminder.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/timehascome.wav"));
+
     private Timer timer;
 
     /**

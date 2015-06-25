@@ -6,13 +6,12 @@ enum RingToneOption
     BLIP,
     PLING,
     WHISTLE,
-    TIME_HAS_COME,
-    CUSTOM;
+    TIME_HAS_COME;
 
     @Override public String toString() {
 	switch (this){
 	    case NONE:
-		return "Ingen";
+		return "Ingen ringsignal";
 	    case BLIP:
 		return "Armbandsur";
 	    case PLING:
@@ -21,8 +20,6 @@ enum RingToneOption
 		return "Vissling";
 	    case TIME_HAS_COME:
 		return "\"Tiden är kommen\"";
-	    case CUSTOM:
-		return "Anpassad...";
 	    default:
 		return "";
 	}

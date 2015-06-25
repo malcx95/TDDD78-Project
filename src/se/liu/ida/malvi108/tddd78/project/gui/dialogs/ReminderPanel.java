@@ -4,6 +4,7 @@ import se.liu.ida.malvi108.tddd78.project.reminders.Reminder;
 import se.liu.ida.malvi108.tddd78.project.time.Date;
 import se.liu.ida.malvi108.tddd78.project.time.TimePoint;
 
+import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -16,6 +17,7 @@ import javax.swing.*;
  */
 class ReminderPanel extends JPanel
 {
+    private final static Icon PLAY = new ImageIcon(ReminderPanel.class.getResource("/se/liu/ida/malvi108/tddd78/project/images/play.png"));
     private static final int ONE_WEEK = 7;
     private static final int TWO_WEEKS = 14;
     private static final int FOUR_WEEKS = 28;
@@ -23,6 +25,7 @@ class ReminderPanel extends JPanel
     private RingtoneSelector ringtoneSelector;
     private boolean wholeDay;
     private final JCheckBox remindBox;
+    private JButton playButton;
 
 
     ReminderPanel(boolean wholeDay){
@@ -35,7 +38,35 @@ class ReminderPanel extends JPanel
 	ringtoneSelector = new RingtoneSelector();
 	ringtoneSelector.setEnabled(remindBox.isSelected());
 	setWholeDay(wholeDay);
-	add(ringtoneSelector, BorderLayout.SOUTH);
+	addRingtoneSelector();
+	setCorrectPlayButtonState();
+    }
+
+    private void setCorrectPlayButtonState() {
+	playButton.setEnabled(ringtoneSelector.getSelectedItem() != RingToneOption.NONE &&
+				remindBox.isSelected());
+    }
+
+    private void addRingtoneSelector() {
+	JPanel panel = new JPanel();
+	panel.add(ringtoneSelector);
+	ringtoneSelector.addActionListener(new ActionListener()
+	{
+	    @Override public void actionPerformed(final ActionEvent e) {
+		setCorrectPlayButtonState();
+	    }
+	});
+	playButton = new JButton(PLAY);
+	playButton.addActionListener(new ActionListener()
+	{
+	    @Override public void actionPerformed(final ActionEvent e) {
+		AudioClip ringtone = ringtoneSelector.getSelectedRingtone();
+		assert ringtone != null : "Internal error: ringtone is null";
+		ringtone.play();
+	    }
+	});
+	panel.add(playButton);
+	add(panel, BorderLayout.SOUTH);
     }
 
     void setWholeDay(boolean wholeDay){
@@ -147,6 +178,7 @@ class ReminderPanel extends JPanel
 		boolean selected = remindBox.isSelected();
 		timeBox.setEnabled(selected);
 		ringtoneSelector.setEnabled(selected);
+		setCorrectPlayButtonState();
 	    }
 	});
     }
