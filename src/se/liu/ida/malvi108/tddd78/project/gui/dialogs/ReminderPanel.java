@@ -4,7 +4,6 @@ import se.liu.ida.malvi108.tddd78.project.reminders.Reminder;
 import se.liu.ida.malvi108.tddd78.project.time.Date;
 import se.liu.ida.malvi108.tddd78.project.time.TimePoint;
 
-import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -90,85 +89,85 @@ class ReminderPanel extends JPanel
      * @param refDate The date at which the appointment to be reminded about is scheduled.
      * @param refTime The time at which the appointment to be reminded about is scheduled.
      */
-    Reminder getReminder(Date refDate, TimePoint refTime, String title, String text){
+    Reminder getReminder(Date refDate, TimePoint refTime, String subject){
 	AudioClip ringtone = ringtoneSelector.getSelectedRingtone();
 	if (wholeDay){
-	    return getWholeDayReminder(refDate, ringtone, title, text);
+	    return getWholeDayReminder(refDate, ringtone, subject);
 	} else {
-	    return getStandardReminder(refDate, refTime, ringtone, title, text);
+	    return getStandardReminder(refDate, refTime, ringtone, subject);
 	}
     }
 
     private Reminder getStandardReminder(final Date refDate, final TimePoint refTime, final AudioClip ringtone,
-					 final String title, final String text) {
+					 final String subject) {
 	switch ((StandardReminderTimeOption) timeBox.getSelectedItem()){
 	    case ON_TIME:
-		return new Reminder(refDate, refTime, ringtone, title, text);
+		return new Reminder(refDate, refTime, ringtone, subject, refTime + "<i> - nu</i>");
 	    case FIVE_MINUTES:
-		return createAppropriateReminder(5, refDate, refTime, ringtone, title, text);
+		return createAppropriateReminder(5, refDate, refTime, ringtone, subject);
 	    case TEN_MINUTES:
-		return createAppropriateReminder(10, refDate, refTime, ringtone, title, text);
+		return createAppropriateReminder(10, refDate, refTime, ringtone, subject);
 	    case FIFTEEN_MINUTES:
-		return createAppropriateReminder(15, refDate, refTime, ringtone, title, text);
+		return createAppropriateReminder(15, refDate, refTime, ringtone, subject);
 	    case THIRTY_MINUTES:
-		return createAppropriateReminder(30, refDate, refTime, ringtone, title, text);
+		return createAppropriateReminder(30, refDate, refTime, ringtone, subject);
 	    case ONE_HOUR:
-		return createAppropriateReminderHour(1, refDate, refTime, ringtone, title, text);
+		return createAppropriateReminderHour(1, refDate, refTime, ringtone, subject);
 	    case TWO_HOURS:
-		return createAppropriateReminderHour(2, refDate, refTime, ringtone, title, text);
+		return createAppropriateReminderHour(2, refDate, refTime, ringtone, subject);
 	    case SIX_HOURS:
-		return createAppropriateReminderHour(6, refDate, refTime, ringtone, title, text);
+		return createAppropriateReminderHour(6, refDate, refTime, ringtone, subject);
 	    case ONE_DAY:
-		return new Reminder(refDate.getPreviousDay(), refTime, ringtone, title, text);
+		return new Reminder(refDate.getPreviousDay(), refTime, ringtone, subject, "I morgon kl " + refTime);
 	    case TWO_DAYS:
-		return new Reminder(refDate.getDaysBefore(2), refTime, ringtone, title, text);
+		return new Reminder(refDate.getDaysBefore(2), refTime, ringtone, subject, refDate + ", kl " + refTime + " - <i> om två dagar</i>");
 	    case ONE_WEEK:
-		return new Reminder(refDate.getDaysBefore(ONE_WEEK), refTime, ringtone, title, text);
+		return new Reminder(refDate.getDaysBefore(ONE_WEEK), refTime, ringtone, subject, refDate + ", kl " + refTime + " - <i> om en vecka</i>");
 	    case TWO_WEEKS:
-		return new Reminder(refDate.getDaysBefore(TWO_WEEKS), refTime, ringtone, title, text);
+		return new Reminder(refDate.getDaysBefore(TWO_WEEKS), refTime, ringtone, subject, refDate + ", kl " + refTime + " - <i> om två veckor</i>");
 	    default:
 		return null;
 	}
     }
 
     private Reminder getWholeDayReminder(final Date refDate, final AudioClip ringtone,
-					 final String title, final String text) {
+					 final String title) {
 	switch ((WholeDayReminderTimeOption) timeBox.getSelectedItem()){
 	    case ON_TIME:
-		return new Reminder(refDate, null, ringtone, title, text);
+		return new Reminder(refDate, null, ringtone, title, refDate + " - <i> idag</i>");
 	    case ONE_DAY:
-		return new Reminder(refDate.getPreviousDay(), null, ringtone, title, text);
+		return new Reminder(refDate.getPreviousDay(), null, ringtone, title, refDate + " - <i> i morgon</i>");
 	    case TWO_DAYS:
-		return new Reminder(refDate.getDaysBefore(2), null, ringtone, title, text);
+		return new Reminder(refDate.getDaysBefore(2), null, ringtone, title, refDate + " - <i> om två dagar</i>");
 	    case THREE_DAYS:
-		return new Reminder(refDate.getDaysBefore(3), null, ringtone, title, text);
+		return new Reminder(refDate.getDaysBefore(3), null, ringtone, title, refDate + " - <i> om tre dagar</i>");
 	    case ONE_WEEK:
-		return new Reminder(refDate.getDaysBefore(ONE_WEEK), null, ringtone, title, text);
+		return new Reminder(refDate.getDaysBefore(ONE_WEEK), null, ringtone, title, refDate + " - <i> om en vecka</i>");
 	    case TWO_WEEKS:
-		return new Reminder(refDate.getDaysBefore(TWO_WEEKS), null, ringtone, title, text);
+		return new Reminder(refDate.getDaysBefore(TWO_WEEKS), null, ringtone, title, refDate + " - <i> om två veckor</i>");
 	    case FOUR_WEEKS:
-		return new Reminder(refDate.getDaysBefore(FOUR_WEEKS), null, ringtone, title, text);
+		return new Reminder(refDate.getDaysBefore(FOUR_WEEKS), null, ringtone, title, refDate + " - <i> om fyra veckor</i>");
 	    default:
 		return null;
 	}
     }
 
     private Reminder createAppropriateReminderHour(int decrement, Date refdate, TimePoint refTime, AudioClip ringtone,
-						   String title, String text){
+						   String subject){
 	if (refTime.canDecrementHour(decrement)){
 	    refdate = refdate.getPreviousDay();
 	}
-	return new Reminder(refdate, refTime, ringtone, title, text);
+	return new Reminder(refdate, refTime, ringtone, subject, refTime + " - <i> om " + decrement + " timmar</i>");
     }
 
     private Reminder createAppropriateReminder(int decrement, Date refDate, TimePoint refTime, AudioClip ringtone,
-					       String title, String text){
+					       String subject){
 	//TODO se till så att man inte kan skapa ett datum innan 2007 såhär
 	//t ex genom att göra så att man inte kan skapa påminnelser för förflutna aktiviteter
 	if (refTime.canDecrement(decrement)){
 	    refDate = refDate.getPreviousDay();
 	}
-	return new Reminder(refDate, refTime, ringtone, title, text);
+	return new Reminder(refDate, refTime.getDecremented(decrement), ringtone, subject, refTime + " - <i> om " + decrement + " minuter</i>");
     }
 
     private void addRemindBoxListener() {

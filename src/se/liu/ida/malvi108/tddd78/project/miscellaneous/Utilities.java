@@ -19,4 +19,11 @@ public final class Utilities
 	int blue = random.nextInt(HIGHEST_COLOR_VALUE);
 	return new Color(red, green, blue);
     }
+
+    /**
+     * Simply adds the string "<html>" to the beginning of the string, to make it formattable.
+     */
+    public static String toHTML(String text){
+	return "<html>" + text;
+    }
 }

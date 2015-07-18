@@ -232,12 +232,12 @@ public final class AppointmentDialog
 	    String location = locationField.getText();
 	    Calendar calendar = (Calendar) calendarSelector.getSelectedItem();
 	    if (wholeDayBox.isSelected()) {
-	    	calendar.addWholeDayAppointment(new WholeDayAppointment(subject, description, location, date, reminderPanel.getReminder(date, null, "Påminnelse", subject)));
+	    	calendar.addWholeDayAppointment(new WholeDayAppointment(subject, description, location, date, reminderPanel.getReminder(date, null, subject)));
 	    } else {
 	    	TimePoint start = TimePoint.extractTimePoint((java.util.Date) startTimeSpinner.getValue()); //JSpinner returns java.util.Date, so this is inescapable.
 	    	TimePoint end = TimePoint.extractTimePoint((java.util.Date) endTimeSpinner.getValue());
 	    	TimeSpan timeSpan = new TimeSpan(start, end);
-	    	calendar.addStandardAppointment(new StandardAppointment(timeSpan, date, subject, location, description, reminderPanel.getReminder(date, timeSpan.getStart(), "Påminnelse", subject)));
+	    	calendar.addStandardAppointment(new StandardAppointment(timeSpan, date, subject, location, description, reminderPanel.getReminder(date, timeSpan.getStart(), subject)));
 	    }
 	}
     }
