@@ -1,13 +1,19 @@
 package se.liu.ida.malvi108.tddd78.project.databases;
 
+import se.liu.ida.malvi108.tddd78.project.appointments.Appointment;
 import se.liu.ida.malvi108.tddd78.project.appointments.Calendar;
 import se.liu.ida.malvi108.tddd78.project.appointments.StandardAppointment;
 import se.liu.ida.malvi108.tddd78.project.appointments.WholeDayAppointment;
 import se.liu.ida.malvi108.tddd78.project.exceptions.CalendarAlreadyExistsException;
 import se.liu.ida.malvi108.tddd78.project.exceptions.FileCorruptedException;
 import se.liu.ida.malvi108.tddd78.project.exceptions.InvalidCalendarNameException;
+import se.liu.ida.malvi108.tddd78.project.gui.dialogs.ReminderTimeOption;
+import se.liu.ida.malvi108.tddd78.project.gui.dialogs.Ringtone;
 import se.liu.ida.malvi108.tddd78.project.listeners.CalendarDatabaseListener;
 import se.liu.ida.malvi108.tddd78.project.listeners.DatabaseSaveErrorListener;
+import se.liu.ida.malvi108.tddd78.project.reminders.Reminder;
+import se.liu.ida.malvi108.tddd78.project.time.Date;
+import se.liu.ida.malvi108.tddd78.project.time.TimePoint;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -77,8 +83,10 @@ public final class CalendarDatabase extends Database<Calendar>
      * 	- The calendar's name. <br>
      * 	- The calendar's color. <br>
      * 	- The number of <code>StandardAppointments</code>. <br>
-     * 	- Writes all <code>StandardAppointments</code> in the calendar. (as their own objects and not a list)<br>
-     *  - The number of <code>WholeDayAppointments</code>. <br>
+     * 	- Writes all <code>StandardAppointments</code> in the calendar (as their own objects and not a list).<br>
+     * 	    For each appointment, a flag is written after it telling whether the appointment has a reminder,<br>
+     * 	    and if it does, it writes the reminder's date, time, ringtone, subject, relTime string and timeOption.<br>
+     *  - The number of <code>WholeDayAppointments</code>. Writes reminders in the same way as for standard appointments.<br>
      * 	- Writes all <code>WholeDayAppointments</code> in the calendar. (as their own objects and not a list) <br>
      * }
      * <br>
@@ -118,6 +126,7 @@ public final class CalendarDatabase extends Database<Calendar>
 	    throws IOException {
 	for (WholeDayAppointment appointment : calendar.getWholeDayAppointments()) {
 	    out.writeObject(appointment);
+	    writeReminder(out, appointment.getReminder());
 	}
     }
 
@@ -125,6 +134,21 @@ public final class CalendarDatabase extends Database<Calendar>
 	    throws IOException {
 	for (StandardAppointment appointment : calendar.getStandardAppointments()) {
 	    out.writeObject(appointment);
+	    writeReminder(out, appointment.getReminder());
+	}
+    }
+
+    private void writeReminder(final ObjectOutput out, final Reminder reminder) throws IOException{
+	if (reminder == null) {
+	    out.writeObject(false); //no reminder
+	} else {
+	    out.writeObject(true);
+	    out.writeObject(reminder.getDate());
+	    out.writeObject(reminder.getTime());
+	    out.writeObject(reminder.getRingtone());
+	    out.writeObject(reminder.getSubject());
+	    out.writeObject(reminder.getRelTime());
+	    out.writeObject(reminder.getTimeOption());
 	}
     }
 
@@ -152,7 +176,9 @@ public final class CalendarDatabase extends Database<Calendar>
 	    throws IOException, ClassNotFoundException {
 	int size = (int) in.readObject();
 	for (int i = 0; i < size; i++) {
-	    calendar.silentlyAddWholeDayAppointment((WholeDayAppointment) in.readObject());
+	    WholeDayAppointment appointment = (WholeDayAppointment) in.readObject();
+	    readReminder(in, appointment);
+	    calendar.silentlyAddWholeDayAppointment(appointment);
 	}
     }
 
@@ -160,7 +186,24 @@ public final class CalendarDatabase extends Database<Calendar>
 	    throws IOException, ClassNotFoundException {
 	int size = (int) in.readObject();
 	for (int i = 0; i < size; i++) {
-	    calendar.silentlyAddStandardAppointment((StandardAppointment) in.readObject());
+	    StandardAppointment appointment = (StandardAppointment) in.readObject();
+	    readReminder(in, appointment);
+	    calendar.silentlyAddStandardAppointment(appointment);
+	}
+    }
+
+    private void readReminder(final ObjectInput in, final Appointment appointment)
+	    throws ClassNotFoundException, IOException
+    {
+	boolean hasReminder = (boolean) in.readObject();
+	if (hasReminder){
+	    Date date = (Date) in.readObject();
+	    TimePoint time = (TimePoint) in.readObject();
+	    Ringtone ringtone = (Ringtone) in.readObject();
+	    String subject = (String) in.readObject();
+	    String relTime = (String) in.readObject();
+	    ReminderTimeOption option = (ReminderTimeOption) in.readObject();
+	    appointment.setReminder(new Reminder(date, time, ringtone, subject, relTime, option));
 	}
     }
 

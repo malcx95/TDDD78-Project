@@ -4,7 +4,6 @@ import se.liu.ida.malvi108.tddd78.project.reminders.Reminder;
 import se.liu.ida.malvi108.tddd78.project.time.Date;
 import se.liu.ida.malvi108.tddd78.project.time.TimePoint;
 
-import java.applet.AudioClip;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -30,16 +30,16 @@ public enum Ringtone
      */
     TIME_HAS_COME;
 
-    private final static AudioClip BLIP_SOUND = Applet
+    private transient final static AudioClip BLIP_SOUND = Applet
 		.newAudioClip(Ringtone.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/blipblip.wav"));
 
-    private final static AudioClip PLING_SOUND = Applet.newAudioClip(
+    private transient final static AudioClip PLING_SOUND = Applet.newAudioClip(
             Ringtone.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/pling.wav"));
 
-    private final static AudioClip WHISTLE_SOUND = Applet.newAudioClip(
+    private transient final static AudioClip WHISTLE_SOUND = Applet.newAudioClip(
             Ringtone.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/whistle.wav"));
 
-    private final static AudioClip TIME_HAS_COME_SOUND = Applet.newAudioClip(
+    private transient final static AudioClip TIME_HAS_COME_SOUND = Applet.newAudioClip(
             Ringtone.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/timehascome.wav"));
 
     @Override public String toString() {

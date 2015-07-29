@@ -88,4 +88,8 @@ public class Appointment implements Serializable
     public Reminder getReminder() {
         return reminder;
     }
+
+    public void setReminder(Reminder reminder){
+        this.reminder = reminder;
+    }
 }
