@@ -178,7 +178,7 @@ public final class TimePoint implements Serializable
 	int newHour;
 	int minuteDiff = minute - minutes;
 	if (minuteDiff < 0){
-	    newMinute = minuteDiff % MINUTES_IN_HOUR;
+	    newMinute = MINUTES_IN_HOUR + minuteDiff;
 	    newHour = hour - 1;
 	} else {
 	    newMinute = minuteDiff;

@@ -110,13 +110,25 @@ public final class AppointmentDialog
 	Calendar calendar = Calendar.getAssociatedCalendar(appointment);
 	assert calendar != null: "Internal error, calendar is null";
 	setCalendar(calendar);
-	if (appointment instanceof StandardAppointment){
+	boolean wholeDay = appointment instanceof WholeDayAppointment;
+	if (!wholeDay) {
 	    StandardAppointment stdApp = (StandardAppointment) appointment;
 	    setTimeSpan(stdApp.getDuration());
-	    setWholeDayBox(false);
-	} else {
-	    setWholeDayBox(true);
 	}
+	setWholeDayBox(wholeDay);
+	setReminder(appointment.getReminder(), wholeDay);
+    }
+
+    public void setReminder(Reminder reminder, boolean wholeDay){
+	if (reminder == null){
+	    reminderPanel.setRemindBox(false);
+	} else {
+	    reminderPanel.setRemindBox(true);
+	    reminderPanel.setWholeDay(wholeDay);
+	    reminderPanel.setRingtone(reminder.getRingtone());
+	    reminderPanel.setReminderTime(reminder.getTimeOption());
+	}
+	reminderPanel.setCorrectPlayButtonState();
     }
 
     public void setSubject(String subject){

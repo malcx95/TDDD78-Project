@@ -1,35 +1,12 @@
 package se.liu.ida.malvi108.tddd78.project.gui.dialogs;
 
 import javax.swing.*;
-import java.applet.Applet;
-import java.applet.AudioClip;
-import java.net.URL;
 
-class RingtoneSelector extends JComboBox<RingToneOption>
+class RingtoneSelector extends JComboBox<Ringtone>
 {
-    /**
-     * Sound similar to that of a watch-alarm.
-     */
-    public final static AudioClip BLIP = Applet.newAudioClip(
-	    RingtoneSelector.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/blipblip.wav"));
-    /**
-     * The sound of a glass being striked.
-     */
-    public final static AudioClip PLING = Applet.newAudioClip(
-	    RingtoneSelector.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/pling.wav"));
-    /**
-     * The sound of a simple whistle.
-     */
-    public final static AudioClip WHISTLE = Applet.newAudioClip(
-	    RingtoneSelector.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/whistle.wav"));
-    /**
-     * The sound of someone saying 'The time has come, to perform the task you set out to perform'.
-     */
-    public final static AudioClip TIME_HAS_COME = Applet.newAudioClip(
-	    RingtoneSelector.class.getResource("/se/liu/ida/malvi108/tddd78/project/sounds/timehascome.wav"));
 
     RingtoneSelector(){
-	super(RingToneOption.values());
+	super(Ringtone.values());
 	/*addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent e) {
@@ -68,20 +45,5 @@ class RingtoneSelector extends JComboBox<RingToneOption>
 	}
     }*/
 
-    AudioClip getSelectedRingtone(){
-	switch ((RingToneOption) getSelectedItem()){
-	    case NONE:
-		return null;
-	    case BLIP:
-		return BLIP;
-	    case PLING:
-		return PLING;
-	    case WHISTLE:
-		return WHISTLE;
-	    case TIME_HAS_COME:
-		return TIME_HAS_COME;
-	    default:
-		return null;
-	}
-    }
+
 }

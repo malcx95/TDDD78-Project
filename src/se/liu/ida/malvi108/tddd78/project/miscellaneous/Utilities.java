@@ -12,6 +12,9 @@ public final class Utilities
 
     private Utilities(){}
 
+    /**
+     * Generates a random color.
+     */
     public static Color generateRandomColor() {
 	Random random = new Random();
 	int red = random.nextInt(HIGHEST_COLOR_VALUE);
@@ -20,10 +23,9 @@ public final class Utilities
 	return new Color(red, green, blue);
     }
 
-    /**
-     * Simply adds the string "<html>" to the beginning of the string, to make it formattable.
-     */
-    public static String toHTML(String text){
+
+/*    public static String toHTML(String text){
 	return "<html>" + text;
     }
+    */
 }

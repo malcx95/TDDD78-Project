@@ -32,7 +32,7 @@ public class Appointment implements Serializable
      */
     protected Date date;
 
-    protected Reminder reminder;
+    protected transient Reminder reminder;
 
     /**
      * Constructor for general appointments. Only subclasses of <code>Appointment</code> should use this constructor.
@@ -71,7 +71,21 @@ public class Appointment implements Serializable
 	return date;
     }
 
-    public Reminder getReminder(){
+    /**
+     * Cancels the <code>Appointment's</code> reminder. Does nothing if the appointment has no reminder.
+     */
+    public void cancelReminder(){
+        if (reminder != null) {
+            reminder.cancel();
+            reminder = null;
+        }
+    }
+
+    public boolean hasReminder(){
+        return reminder != null;
+    }
+
+    public Reminder getReminder() {
         return reminder;
     }
 }

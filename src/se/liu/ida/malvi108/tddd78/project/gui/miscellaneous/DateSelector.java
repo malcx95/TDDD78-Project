@@ -21,6 +21,7 @@ public final class DateSelector extends JPanel
     private JSpinner daySpinner;
     private static final int MONTH_SELECTOR_WIDTH = 100;
     private static final int MAXIMUM_NUMBER_OF_DAYS = 31;
+    private static final int MAX_YEAR = 3000;
 
     public DateSelector() {
 	Date today = Date.getToday();
@@ -30,7 +31,7 @@ public final class DateSelector extends JPanel
 	daySpinner = new JSpinner();
 
 	this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-	yearSpinner.setModel(new SpinnerNumberModel(today.getYear(), Year.STARTING_YEAR, null, 1));
+	yearSpinner.setModel(new SpinnerNumberModel(today.getYear(), Year.STARTING_YEAR, MAX_YEAR, 1));
 	yearSpinner.setEditor(new NumberEditor(yearSpinner, "#"));
 	monthSpinner.setModel(new SpinnerListModel(MonthName.values()));
 	monthSpinner.setValue(today.getMonthName());

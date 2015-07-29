@@ -190,6 +190,7 @@ public class Calendar implements Serializable
 
     public void removeAppointment(Appointment app){
 	assert this.contains(app): "Internal error, appointment isn't in the calendar";
+	app.cancelReminder();
 	if (app instanceof StandardAppointment){
 	    StandardAppointment stdApp = (StandardAppointment) app;
 	    stdAppointments.remove(stdApp);
