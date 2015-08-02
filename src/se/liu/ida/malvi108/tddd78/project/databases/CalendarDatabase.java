@@ -142,7 +142,7 @@ public final class CalendarDatabase extends Database<Calendar>
 	if (reminder == null) {
 	    out.writeObject(false); //no reminder
 	} else {
-	    out.writeObject(true);
+	    out.writeObject(true); // flag telling whether the appointment has a reminder.
 	    out.writeObject(reminder.getDate());
 	    out.writeObject(reminder.getTime());
 	    out.writeObject(reminder.getRingtone());

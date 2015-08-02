@@ -1,5 +1,7 @@
 package se.liu.ida.malvi108.tddd78.project.appointments;
 
+import se.liu.ida.malvi108.tddd78.project.databases.CalendarDatabase;
+import se.liu.ida.malvi108.tddd78.project.listeners.ReminderListener;
 import se.liu.ida.malvi108.tddd78.project.reminders.Reminder;
 import se.liu.ida.malvi108.tddd78.project.time.Date;
 
@@ -13,7 +15,7 @@ import java.io.Serializable;
  * @see StandardAppointment
  * @see WholeDayAppointment
  */
-public class Appointment implements Serializable
+public class Appointment implements Serializable, ReminderListener
 {
     /**
      * The subject or "title" of the appointment.
@@ -53,6 +55,9 @@ public class Appointment implements Serializable
 	this.location = location;
 	this.date = date;
         this.reminder = reminder;
+        if (reminder != null) {
+            reminder.setReminderListener(this);
+        }
     }
 
     public String getSubject() {
@@ -78,11 +83,8 @@ public class Appointment implements Serializable
         if (reminder != null) {
             reminder.cancel();
             reminder = null;
+            CalendarDatabase.getInstance().tryToSaveChanges();
         }
-    }
-
-    public boolean hasReminder(){
-        return reminder != null;
     }
 
     public Reminder getReminder() {
@@ -91,5 +93,13 @@ public class Appointment implements Serializable
 
     public void setReminder(Reminder reminder){
         this.reminder = reminder;
+        reminder.setReminderListener(this);
+    }
+
+    /**
+     * Invoked when the reminder is fired
+     */
+    @Override public void reminderFired() {
+        cancelReminder();
     }
 }

@@ -2,6 +2,7 @@ package se.liu.ida.malvi108.tddd78.project.reminders;
 
 import se.liu.ida.malvi108.tddd78.project.gui.dialogs.ReminderTimeOption;
 import se.liu.ida.malvi108.tddd78.project.gui.dialogs.Ringtone;
+import se.liu.ida.malvi108.tddd78.project.listeners.ReminderListener;
 import se.liu.ida.malvi108.tddd78.project.time.Date;
 import se.liu.ida.malvi108.tddd78.project.time.TimePoint;
 
@@ -37,10 +38,12 @@ public class Reminder
     private String subject;
     private String relTime;
     private ReminderTimeOption timeOption;
+    private ReminderListener listener;
 
     /**
      * Creates a reminder with the given parameters. The <code>time</code> can be null, in which case it is set to 9:00AM.
-     * The date and ringtone must not be null, if no ringtone is to be played, use <code>Ringtone.NONE</code>.
+     * The date and ringtone must not be null, if no ringtone is to be played, use <code>Ringtone.NONE</code>. Does nothing
+     * if the given <code>time</code> has already passed.
      *
      * @param date The date at which the reminder should be shown.
      * @param time The time of the day at which the reminder should be shown.
@@ -49,7 +52,8 @@ public class Reminder
      * @param relTime A string containing information about when the scheduled appointment is due, for example
      *                "in five minutes" or "December 12:th".
      */
-    public Reminder(Date date, TimePoint time, Ringtone ringtone, String subject, String relTime, ReminderTimeOption timeOption){
+    public Reminder(Date date, TimePoint time, Ringtone ringtone, String subject,
+                    String relTime, ReminderTimeOption timeOption){
         if (date == null) {
             throw new IllegalArgumentException("Date must not be null!");
         }
@@ -62,23 +66,36 @@ public class Reminder
         this.subject = subject;
         this.relTime = relTime;
         this.timeOption = timeOption;
+        this.listener = null;
         timer = new Timer();
         createTimerTask(date, time, ringtone, subject, relTime);
+    }
+
+    public void setReminderListener(ReminderListener listener){
+        this.listener = listener;
     }
 
     private void createTimerTask(Date date, TimePoint time, final Ringtone ringtone, final String subject, final String relTime) {
         Calendar calendar = Calendar.getInstance(); //java.util.Calendar and Date need to be used as the java.util.Timer require this.
         calendar.set(date.getYear(), date.getMonth() - 1, //this works since Calendar.JANUARY is 0, FEBRUARY is 1 and so forth
                      date.getDay(), time.getHour(), time.getMinute(), 0);
-        TimerTask task = new TimerTask()
-        {
-            @Override public void run() {
-                ringtone.play();
-                String reminderText = "<html><t1 style=\"font-size:200%\"><b>" + subject + "</b></t1><br><br>" + relTime;
-                JOptionPane.showMessageDialog(null, reminderText, "Påminnelse - " + subject, JOptionPane.PLAIN_MESSAGE, REMINDER_ICON);
-            }
-        };
-        timer.schedule(task, calendar.getTime());
+        Date today = Date.getToday();
+        if (!((time.precedes(TimePoint.getNow()) && date.equals(today)) || date.precedes(today))) {
+            //The reminder should only be scheduled if the time to be reminded on is a time in the future.
+            TimerTask task = new TimerTask()
+            {
+                @Override public void run() {
+                    ringtone.play();
+                    String reminderText = "<html><t1 style=\"font-size:200%\"><b>" + subject + "</b></t1><br><br>" + relTime;
+                    JOptionPane.showMessageDialog(null, reminderText, "Påminnelse - " + subject, JOptionPane.PLAIN_MESSAGE,
+                                                  REMINDER_ICON);
+                    if (listener != null) {
+                        listener.reminderFired();
+                    }
+                }
+            };
+            timer.schedule(task, calendar.getTime());
+        }
     }
 
     /**

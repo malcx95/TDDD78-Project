@@ -94,7 +94,6 @@ public final class AppointmentDialog
 
 	addTimeSelectorListeners();
 	addWholeDayListener();
-
 	TimePoint now = TimePoint.getNow();
 	setTimeSpan(new TimeSpan(now, now.getNextHour()));
     }
@@ -190,6 +189,7 @@ public final class AppointmentDialog
 		    TimeSpan span = new TimeSpan(start, start.getIncremented(MINIMUM_DURATION));
 		    setTimeSpan(span);
 		}
+		setCorrectRemindBoxState();
 	    }
 	};
 	ChangeListener endListener = new ChangeListener()
@@ -211,6 +211,14 @@ public final class AppointmentDialog
 	};
 	startTimeSpinner.addChangeListener(startListener);
 	endTimeSpinner.addChangeListener(endListener);
+    }
+
+    private void setCorrectRemindBoxState() {
+	TimePoint start = TimePoint.extractTimePoint((java.util.Date) startTimeSpinner.getValue());
+	Date date = dateSelector.getSelectedDate();
+	Date today = Date.getToday();
+	boolean enabled = !(start.precedes(TimePoint.getNow()) && date.equals(today)) || date.precedes(today);
+	reminderPanel.setEnabled(enabled);
     }
 
     /**
@@ -235,6 +243,7 @@ public final class AppointmentDialog
 	String title;
 	if (inputType == NEW) title = "Ny aktivitet";
 	else title = "Ändra aktivitet";
+	setCorrectRemindBoxState();
 	int option = JOptionPane.showOptionDialog(null, createInputs(), title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
 				  null, null);
 	if (option == JOptionPane.OK_OPTION || inputType == EDIT) { //if the user wants to edit, an identical appointment should be created

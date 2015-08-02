@@ -20,7 +20,7 @@ class ReminderPanel extends JPanel
     private static final int TWO_WEEKS = 14;
     private static final int FOUR_WEEKS = 28;
     private JComboBox<ReminderTimeOption> timeBox;
-    private RingtoneSelector ringtoneSelector;
+    private JComboBox<Ringtone> ringtoneSelector;
     private boolean wholeDay;
     private final JCheckBox remindBox;
     private JButton playButton;
@@ -33,15 +33,15 @@ class ReminderPanel extends JPanel
 	addRemindBoxListener();
 	add(remindBox, BorderLayout.NORTH);
 	timeBox = null;
-	ringtoneSelector = new RingtoneSelector();
-	ringtoneSelector.setEnabled(remindBox.isSelected());
+	ringtoneSelector = new JComboBox<>(Ringtone.values());
 	setWholeDay(wholeDay);
 	addRingtoneSelector();
+	ringtoneSelector.setEnabled(remindBox.isSelected() && remindBox.isEnabled());
 	setCorrectPlayButtonState();
     }
 
     public void setCorrectPlayButtonState() {
-	playButton.setEnabled(ringtoneSelector.getSelectedItem() != Ringtone.NONE && remindBox.isSelected());
+	playButton.setEnabled(ringtoneSelector.getSelectedItem() != Ringtone.NONE && remindBox.isSelected() && remindBox.isEnabled());
     }
 
     private void addRingtoneSelector() {
@@ -75,7 +75,7 @@ class ReminderPanel extends JPanel
 	} else {
 	    timeBox = new JComboBox<>((ReminderTimeOption[]) StandardReminderTimeOption.values());
 	}
-	timeBox.setEnabled(remindBox.isSelected());
+	timeBox.setEnabled(remindBox.isSelected() && remindBox.isEnabled());
 	add(timeBox, BorderLayout.CENTER);
 	revalidate();
     }
@@ -186,7 +186,7 @@ class ReminderPanel extends JPanel
 	remindBox.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent e) {
-		boolean selected = remindBox.isSelected();
+		boolean selected = remindBox.isSelected() && remindBox.isEnabled();
 		timeBox.setEnabled(selected);
 		ringtoneSelector.setEnabled(selected);
 		setCorrectPlayButtonState();
@@ -198,7 +198,6 @@ class ReminderPanel extends JPanel
 	remindBox.setSelected(selected);
 	timeBox.setEnabled(selected);
 	ringtoneSelector.setEnabled(selected);
-	//setCorrectPlayButtonState();
     }
 
     public void setRingtone(Ringtone ringtone){
@@ -207,6 +206,13 @@ class ReminderPanel extends JPanel
 	} else {
 	    ringtoneSelector.setSelectedItem(ringtone);
 	}
+    }
+
+    @Override public void setEnabled(final boolean enabled) {
+	super.setEnabled(enabled);
+	remindBox.setEnabled(enabled);
+	ringtoneSelector.setEnabled(enabled && remindBox.isSelected());
+	timeBox.setEnabled(enabled && remindBox.isSelected());
     }
 
     public void setReminderTime(ReminderTimeOption option){

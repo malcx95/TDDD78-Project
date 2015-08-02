@@ -134,6 +134,17 @@ public class Date implements Serializable
 	       this.year == other.year;
     }
 
+    /**
+     * Tells whether a date precedes another.
+     */
+    public boolean precedes(Date other){
+	//if (this.equals(other)) return true;
+	if (year < other.year) return true;
+	if (month < other.month) return true;
+	if (day < other.day) return true;
+	return false;
+    }
+
     @Override public String toString() {
 	return day + " " + MonthName.values()[month - 1] + " " + year;
     }
