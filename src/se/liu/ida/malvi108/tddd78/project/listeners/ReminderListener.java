@@ -6,7 +6,7 @@ package se.liu.ida.malvi108.tddd78.project.listeners;
 public interface ReminderListener
 {
     /**
-     * Invoked when the reminder is fired
+     * Invoked when the reminder is fired.
      */
     void reminderFired();
 }

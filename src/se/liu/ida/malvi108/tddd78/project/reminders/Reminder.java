@@ -71,31 +71,28 @@ public class Reminder
         createTimerTask(date, time, ringtone, subject, relTime);
     }
 
-    public void setReminderListener(ReminderListener listener){
-        this.listener = listener;
+    public void setReminderListener(ReminderListener reminderListener){
+        this.listener = reminderListener;
     }
 
     private void createTimerTask(Date date, TimePoint time, final Ringtone ringtone, final String subject, final String relTime) {
         Calendar calendar = Calendar.getInstance(); //java.util.Calendar and Date need to be used as the java.util.Timer require this.
         calendar.set(date.getYear(), date.getMonth() - 1, //this works since Calendar.JANUARY is 0, FEBRUARY is 1 and so forth
                      date.getDay(), time.getHour(), time.getMinute(), 0);
-        Date today = Date.getToday();
-        if (!((time.precedes(TimePoint.getNow()) && date.equals(today)) || date.precedes(today))) {
-            //The reminder should only be scheduled if the time to be reminded on is a time in the future.
-            TimerTask task = new TimerTask()
-            {
-                @Override public void run() {
-                    ringtone.play();
-                    String reminderText = "<html><t1 style=\"font-size:200%\"><b>" + subject + "</b></t1><br><br>" + relTime;
-                    JOptionPane.showMessageDialog(null, reminderText, "Påminnelse - " + subject, JOptionPane.PLAIN_MESSAGE,
-                                                  REMINDER_ICON);
-                    if (listener != null) {
-                        listener.reminderFired();
-                    }
+        TimerTask task = new TimerTask()
+        {
+            @Override public void run() {
+                ringtone.play();
+                String reminderText = "<html><t1 style=\"font-size:200%\"><b>" + subject + "</b></t1><br><br>" + relTime;
+                JOptionPane.showMessageDialog(null, reminderText, "Påminnelse - " + subject, JOptionPane.PLAIN_MESSAGE,
+                                              REMINDER_ICON);
+                if (listener != null) {
+                    listener.reminderFired();
                 }
-            };
-            timer.schedule(task, calendar.getTime());
-        }
+            }
+        };
+        timer.schedule(task, calendar.getTime());
+
     }
 
     /**

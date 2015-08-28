@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 /**
- * Action for showing a <code>RemoveDialog</code> for removing calendar. The user selects which calendars to remove,
+ * Action for showing a <code>RemoveDialog</code> for removing calendars. The user selects which calendars to remove,
  * the GUI asks the user if they're sure they want to remove the calendars, and then removes the selected calendars from the database.
  *
  * @see RemoveDialog

@@ -6,7 +6,7 @@ import se.liu.ida.malvi108.tddd78.project.time.TimeSpan;
 
 /**
  * <code>StandardAppointments</code> are appointments which have a specific duration in a day defined by a <code>TimeSpan</code>.
- * These appointments are suitable for events like "Dinner with family" or "Lunch meeting with company".
+ * These appointments are suitable for events like "Dinner with family" or "Lunch meeting at work".
  * @see Appointment
  * @see WholeDayAppointment
  */

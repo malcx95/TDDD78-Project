@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 
 /**
  * Dialog for inputing appointments. The <code>setInitialParameters</code> method
- * (as well as all other setters)  can be used for determining what values should
+ * (as well as all other setters) can be used for determining what values should
  * be pre-entered into the dialog, and <code>inputAppointment</code> for showing
  * the dialog, inputing the appointment and saving it to the database.
  */
@@ -69,7 +69,6 @@ public final class AppointmentDialog
     public AppointmentDialog(){
 	subjectField = new JTextField("Ny aktivitet");
 	locationField = new JTextField();
-
 	dateSelector = new DateSelector();
 	wholeDayBox = new JCheckBox("Heldag", false);
 	startTimeSpinner = new JSpinner();
@@ -217,7 +216,7 @@ public final class AppointmentDialog
 	TimePoint start = TimePoint.extractTimePoint((java.util.Date) startTimeSpinner.getValue());
 	Date date = dateSelector.getSelectedDate();
 	Date today = Date.getToday();
-	boolean enabled = !(start.precedes(TimePoint.getNow()) && date.equals(today)) || date.precedes(today);
+	boolean enabled = !(start.precedes(TimePoint.getNow()) && date.equals(today) || date.precedes(today));
 	reminderPanel.setEnabled(enabled);
     }
 

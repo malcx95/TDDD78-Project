@@ -11,7 +11,7 @@ public final class TimePoint implements Serializable
 {
     private final static int MINUTES_IN_HOUR = 60;
     private final static int HOURS_IN_DAY = 24;
-    private final static int MINUTES_IN_DAY = 1440;
+    //private final static int MINUTES_IN_DAY = 1440;
     private final static int MAX_HOUR = 23;
     private final static int MAX_MINUTE = 59;
     private int hour;

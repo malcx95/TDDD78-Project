@@ -43,7 +43,13 @@ public class Calendar implements Serializable
      * calendar will have in the view.
      */
     private Color color;
+    /**
+     * The list of the calendar's <code>StandardAppointments</code>.
+     */
     private List<StandardAppointment> stdAppointments;
+    /**
+     * The list of the calendar's <code>WholeDayAppointments</code>.
+     */
     private List<WholeDayAppointment> wholeDayAppointments;
     private transient List<CalendarListener> listeners;
     private transient List<CalendarPropertyListener> propertyListeners;
@@ -156,6 +162,10 @@ public class Calendar implements Serializable
 	return result;
     }
 
+    /**
+     * Adds a <code>WholeDayAppointment</code> to the <code>Calendar</code>, notifies it's
+     * <code>CalendarListeners</code> and tries to save the changes.
+     */
     public void addWholeDayAppointment(WholeDayAppointment app){
 	wholeDayAppointments.add(app);
 	notifyListeners();
@@ -164,6 +174,10 @@ public class Calendar implements Serializable
 	CalendarDatabase.getInstance().tryToSaveChanges();
     }
 
+    /**
+     * Adds a <code>StandardAppointment</code> to the <code>Calendar</code>, notifies it's
+     * <code>CalendarListeners</code> and tries to save the changes.
+     */
     public void addStandardAppointment(StandardAppointment app) {
 	stdAppointments.add(app);
 	notifyListeners();
@@ -188,6 +202,10 @@ public class Calendar implements Serializable
 	stdAppointments.add(app);
     }
 
+    /**
+     * Removes an <code>Appointment</code> from the <code>Calendar</code>, notifies it's
+     * <code>CalendarListeners</code> and tries to save the changes.
+     */
     public void removeAppointment(Appointment app){
 	assert this.contains(app): "Internal error, appointment isn't in the calendar";
 	app.cancelReminder();
@@ -196,7 +214,7 @@ public class Calendar implements Serializable
 	    stdAppointments.remove(stdApp);
 	    LOGGER.log(Level.INFO, "StandardAppointment \"" + app.getSubject() +
 				   "\" removed from calendar \"" + name + "\".");
-	} else{
+	} else {
 	    WholeDayAppointment wdApp = (WholeDayAppointment) app;
 	    wholeDayAppointments.remove(wdApp);
 	    LOGGER.log(Level.INFO, "WholeDayAppointment \"" + app.getSubject() +
@@ -224,12 +242,20 @@ public class Calendar implements Serializable
 	}
     }
 
+    /**
+     * Adds a <code>CalendarListener</code> to this calendar, unless it already contains
+     * the given listener.
+     */
     public void addCalendarListener(CalendarListener listener){
 	if (!listeners.contains(listener)){
 	    listeners.add(listener);
 	}
     }
 
+    /**
+     * Adds a <code>CalendarPropertyListener</code> to this calendar, unless it already contains
+     * the given listener.
+     */
     public void addPropertyListener(CalendarPropertyListener listener){
 	if (!propertyListeners.contains(listener)){
 	    propertyListeners.add(listener);
@@ -262,6 +288,9 @@ public class Calendar implements Serializable
 	return wholeDayAppointments.contains(wdApp);
     }
 
+    /**
+     * Enables the <code>Calendar</code> in the views.
+     */
     public void setEnabled(final boolean enabled) {
 	this.enabled = enabled;
 	notifyListeners();

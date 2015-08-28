@@ -9,8 +9,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Abstract class for databases
+ * General class for databases
  * @param <T> The type of object stored in the database
+ *
+ * @see CalendarDatabase
+ * @see ToDoListDatabase
  */
 public class Database<T>
 {
@@ -31,7 +34,8 @@ public class Database<T>
     }
 
     /**
-     *
+     * Creates the directory where both databases are to be saved: .planitdata, unless it
+     * already exists.
      */
     private void createSaveDirectory() {
         boolean saved = SAVE_DIRECTORY.mkdir();
@@ -46,7 +50,10 @@ public class Database<T>
 	return elements.isEmpty();
     }
 
-    public void createDatabaseDirectory() throws IOException {
+    /**
+     * Creates the database file in the database directory, unless it already exists.
+     */
+    public void createDatabaseFile() throws IOException {
 	File file = new File(databaseFile);
         createSaveDirectory();
 	boolean created = file.createNewFile();

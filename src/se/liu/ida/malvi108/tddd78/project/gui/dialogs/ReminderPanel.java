@@ -19,6 +19,10 @@ class ReminderPanel extends JPanel
     private static final int ONE_WEEK = 7;
     private static final int TWO_WEEKS = 14;
     private static final int FOUR_WEEKS = 28;
+    private static final int FIVE_MINUTES = 5;
+    private static final int TEN_MINUTES = 10;
+    private static final int FIFTEEN_MINUTES = 15;
+    private static final int THIRTY_MINUTES = 30;
     private JComboBox<ReminderTimeOption> timeBox;
     private JComboBox<Ringtone> ringtoneSelector;
     private boolean wholeDay;
@@ -107,13 +111,13 @@ class ReminderPanel extends JPanel
 	    case ON_TIME:
 		return new Reminder(refDate, refTime, ringtone, subject, refTime + "<i> - nu </i>", option);
 	    case FIVE_MINUTES:
-		return createAppropriateReminder(5, refDate, refTime, ringtone, subject, option);
+		return createAppropriateReminder(FIVE_MINUTES, refDate, refTime, ringtone, subject, option);
 	    case TEN_MINUTES:
-		return createAppropriateReminder(10, refDate, refTime, ringtone, subject, option);
+		return createAppropriateReminder(TEN_MINUTES, refDate, refTime, ringtone, subject, option);
 	    case FIFTEEN_MINUTES:
-		return createAppropriateReminder(15, refDate, refTime, ringtone, subject, option);
+		return createAppropriateReminder(FIFTEEN_MINUTES, refDate, refTime, ringtone, subject, option);
 	    case THIRTY_MINUTES:
-		return createAppropriateReminder(30, refDate, refTime, ringtone, subject, option);
+		return createAppropriateReminder(THIRTY_MINUTES, refDate, refTime, ringtone, subject, option);
 	    case ONE_HOUR:
 		return createAppropriateReminderHour(1, refDate, refTime, ringtone, subject, option);
 	    case TWO_HOURS:
@@ -172,8 +176,6 @@ class ReminderPanel extends JPanel
 
     private Reminder createAppropriateReminder(int decrement, Date refDate, TimePoint refTime, Ringtone ringtone,
 					       String subject, StandardReminderTimeOption option){
-	//TODO se till så att man inte kan skapa ett datum innan 2007 såhär
-	//t ex genom att göra så att man inte kan skapa påminnelser för förflutna aktiviteter
 	if (refTime.canDecrement(decrement)){
 	    refDate = refDate.getPreviousDay();
 	}

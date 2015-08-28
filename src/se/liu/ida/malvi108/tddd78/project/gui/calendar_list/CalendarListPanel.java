@@ -36,12 +36,18 @@ public class CalendarListPanel extends JPanel implements CalendarDatabaseListene
 	setBackground(Color.WHITE);
     }
 
+    /**
+     * Adds itself to the lists of propertylisteners of each calendar.
+     */
     private void listenToAllCalendars() {
 	for (Calendar calendar : CalendarDatabase.getInstance().getCalendars()) {
 	    calendar.addPropertyListener(this);
 	}
     }
 
+    /**
+     * Removes all calendars from the view and adds all calendars from the database to the view.
+     */
     private void addCalendarsToView(){
 	this.removeAll();
 	Calendar[] calendars = database.getCalendars();
@@ -75,6 +81,9 @@ public class CalendarListPanel extends JPanel implements CalendarDatabaseListene
 	revalidate();
     }
 
+    /**
+     * Handles double clicking on the <code>CalendarListEntries</code>.
+     */
     private class DoubleClickListener extends MouseAdapter
     {
 	@Override public void mousePressed(final MouseEvent e) {

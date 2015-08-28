@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  * General class for appointments. All appointments have a date, which must not be null. Appointments also have
- * a subject, location and description, all of which are nullable. Appointments are stored in <code>Calendars</code>.
+ * a subject, location, reminder and description, all of which are nullable. Appointments are stored in <code>Calendars</code>.
  *
  * @see Calendar
  * @see StandardAppointment
@@ -33,7 +33,9 @@ public class Appointment implements Serializable, ReminderListener
      * The date at which the appointment takes place.
      */
     protected Date date;
-
+    /**
+     * The reminder for this appointment.
+     */
     protected transient Reminder reminder;
 
     /**
@@ -91,13 +93,16 @@ public class Appointment implements Serializable, ReminderListener
         return reminder;
     }
 
+    /**
+     * Sets the reminder for this appointment, and sets the appointment as the reminders listener.
+     */
     public void setReminder(Reminder reminder){
         this.reminder = reminder;
         reminder.setReminderListener(this);
     }
 
     /**
-     * Invoked when the reminder is fired
+     * Invoked when the reminder is fired. Deletes the reminder once it's been fired.
      */
     @Override public void reminderFired() {
         cancelReminder();

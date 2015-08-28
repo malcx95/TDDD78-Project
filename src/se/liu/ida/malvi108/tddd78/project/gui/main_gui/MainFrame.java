@@ -54,12 +54,12 @@ public final class MainFrame extends JFrame implements CalendarDatabaseListener,
     /**
      * The PlanIt error icon for dialogs.
      */
-    public final static ImageIcon PLAN_IT_ERROR =
+    public final static Icon PLAN_IT_ERROR =
 	    new ImageIcon(MainFrame.class.getResource("/se/liu/ida/malvi108/tddd78/project/images/plan_it_error.png"));
     /**
      * The PlantIt warning icon for dialogs.
      */
-    public final static ImageIcon PLAN_IT_WARNING =
+    public final static Icon PLAN_IT_WARNING =
     	    new ImageIcon(MainFrame.class.getResource("/se/liu/ida/malvi108/tddd78/project/images/plan_it_warning.png"));
     /**
      * A larger version of PLAN_IT_ICON.
@@ -399,12 +399,7 @@ public final class MainFrame extends JFrame implements CalendarDatabaseListener,
     @Override public void appointmentSelectedOrDeselected() {
 	View currentView = (View) tabbedViewPane.getSelectedComponent();
 	Appointment selectedApp = currentView.getSelectedAppointment();
-	//selectedApp not used since the method's only job is to toggle the enabling of the menu item for removing an appointment.
-	if (selectedApp == null){
-	    removeAppointment.setEnabled(false);
-	} else {
-	    removeAppointment.setEnabled(true);
-	}
+	removeAppointment.setEnabled(selectedApp != null);
     }
 
     private class DeleteAppointmentAction extends AbstractAction{

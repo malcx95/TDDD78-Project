@@ -22,6 +22,7 @@ public class MonthViewCell extends ViewComponent
     private final static int NUMBER_MARGIN = 20;
     private final static int NUMBER_FONT_SIZE = 14;
     private final static int WEEK_NUMBER_FONT_SIZE = 11;
+    private final static int LIGHT_GRAY = 210;
     private MonthCellType type;
     private Day day;
     /**
@@ -78,7 +79,7 @@ public class MonthViewCell extends ViewComponent
 	}
 	if (type.equals(MonthCellType.OUTSIDE)) {
 	    setBorder(new LineBorder(Color.GRAY));
-	    number.setForeground(Color.GRAY);
+	    number.setForeground(new Color(LIGHT_GRAY, LIGHT_GRAY, LIGHT_GRAY));
 	} else {
 	    setBorder(new LineBorder(Color.BLACK));
 	}

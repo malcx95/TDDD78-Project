@@ -22,6 +22,10 @@ public class CalendarListEntry extends JComponent implements ActionListener
     private final JCheckBox checkBox;
     private Calendar calendar;
 
+    /**
+     * Creates a <code>CalendarListEntry</code>
+     * @param calendar The calendar to create an entry for.
+     */
     public CalendarListEntry(Calendar calendar){
 	this.calendar = calendar;
 	this.setLayout(new BorderLayout());

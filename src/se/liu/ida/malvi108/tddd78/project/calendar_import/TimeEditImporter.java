@@ -65,6 +65,9 @@ public final class TimeEditImporter
 	}
     }
 
+    /**
+     * Interprets each line from the file and creates <code>Calendars</code> and <code>Appointments</code> accordingly.
+     */
     private static void createAppointments(final Collection<String> restLines) throws FileCorruptedException{
 	if (!restLines.isEmpty()) {
 	    Date date = null; //line representing the date
@@ -80,6 +83,11 @@ public final class TimeEditImporter
 	}
     }
 
+    /**
+     * Interprets a line containing an appointment. If the course of the appointment does not match
+     * any existing courses, a new course is added as a <code>Calendar</code>.
+     * @throws FileCorruptedException
+     */
     private static void interpretAndAddAppointment(final String line, final Date date, CalendarDatabase database)
     throws FileCorruptedException{
 	TimeSpan duration = extractTimeSpan(line);
@@ -186,14 +194,14 @@ public final class TimeEditImporter
     }
 
     /**
-     * Extracts the date ("2015-04-19") from the line. Works independently of whether it was written in swedish or english.
+     * Extracts the date "YYYY-MM-DD" from the line. Works independently of whether it was written in swedish or english.
      */
     private static String extractDate(String line){
 	return removeSpacesBefore(line.substring(3));
     }
 
     /**
-     * Gets an array of the lines in the file.
+     * Gets a list of the lines containing information in the file.
      */
     private static List<String> getRestLines(final BufferedReader reader) throws IOException{
 	boolean continueAdding = true;
@@ -253,7 +261,7 @@ public final class TimeEditImporter
     /**
      * Gets the statement (content between each comma) of the given line.
      * @param line The line you want to scan.
-     * @param order The order (first statement (order = 0), second statement (order = 1)...).
+     * @param order The order (first statement: order = 0, second statement: order = 1...).
      */
     private static String getStatement(CharSequence line, int order){
 	int start = 0; //the position in the line to start from.

@@ -33,6 +33,9 @@ public final class ToDoListDatabase extends Database<ToDoList>
         super("todolist_database.dat");
     }
 
+    /**
+     * Gets the number of <code>ToDoLists</code> in the database that contain at least one entry.
+     */
     private int getNumberOfNonEmptyLists(){
         int result = 0;
         for (ToDoList toDoList : elements) {
@@ -62,7 +65,7 @@ public final class ToDoListDatabase extends Database<ToDoList>
             //a new file is created.
             LOGGER.log(Level.WARNING, "ToDoListDatabase file not found, trying to create new file...");
             try {
-                createDatabaseDirectory();
+                createDatabaseFile();
                 tryToSaveChanges();
                 LOGGER.log(Level.INFO, "New ToDoListDatabase file created.");
             } catch (IOException ex){
@@ -87,7 +90,7 @@ public final class ToDoListDatabase extends Database<ToDoList>
             throw new FileCorruptedException("ToDoListDatabase file corrupted", ex);
         } catch (FileNotFoundException ex){
             LOGGER.log(Level.WARNING, "ToDoListDatabase file not found, creating new file...");
-            createDatabaseDirectory();
+            createDatabaseFile();
             LOGGER.log(Level.INFO, "New ToDoListDatabase file sucessfully created.");
             throw ex;
         }

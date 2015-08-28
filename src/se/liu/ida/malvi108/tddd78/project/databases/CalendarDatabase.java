@@ -109,7 +109,7 @@ public final class CalendarDatabase extends Database<Calendar>
 	    //a new file is created.
 	    LOGGER.log(Level.WARNING, "CalendarDatabase file not found, trying to create new file...");
 	    try {
-		createDatabaseDirectory();
+		createDatabaseFile();
 		tryToSaveChanges();
 	    	LOGGER.log(Level.INFO, "New CalendarDatabase file created.");
 	    } catch (IOException ex) {
@@ -166,7 +166,7 @@ public final class CalendarDatabase extends Database<Calendar>
 	    throw new FileCorruptedException("CalendarDatabase file corrupted.", ex);
 	} catch (FileNotFoundException ex){
 	    LOGGER.log(Level.WARNING, "CalendarDatabase file not found, creating new file...");
-	    createDatabaseDirectory();
+	    createDatabaseFile();
 	    LOGGER.log(Level.INFO, "New CalendarDatabase file sucessfully created.");
 	    throw ex;
 	}
@@ -203,8 +203,19 @@ public final class CalendarDatabase extends Database<Calendar>
 	    String subject = (String) in.readObject();
 	    String relTime = (String) in.readObject();
 	    ReminderTimeOption option = (ReminderTimeOption) in.readObject();
+	    if (reminderTimeHasPassed(time, date)) {
+		relTime = appointment.getDate().toString();
+		if (appointment instanceof StandardAppointment){
+		    relTime += ", kl " + ((StandardAppointment) appointment).getDuration().getStart();
+		}
+	    }
 	    appointment.setReminder(new Reminder(date, time, ringtone, subject, relTime, option));
 	}
+    }
+
+    private boolean reminderTimeHasPassed(TimePoint time, Date date) {
+	Date today = Date.getToday();
+ 	return (time.precedes(TimePoint.getNow()) && date.equals(today) || date.precedes(today));
     }
 
     private Calendar createCalendar(final ObjectInput in)

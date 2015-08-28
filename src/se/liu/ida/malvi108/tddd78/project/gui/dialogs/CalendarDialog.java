@@ -5,7 +5,6 @@ import se.liu.ida.malvi108.tddd78.project.databases.CalendarDatabase;
 import se.liu.ida.malvi108.tddd78.project.exceptions.CalendarAlreadyExistsException;
 import se.liu.ida.malvi108.tddd78.project.exceptions.InvalidCalendarNameException;
 import se.liu.ida.malvi108.tddd78.project.gui.main_gui.MainFrame;
-import sun.applet.Main;
 
 import javax.swing.*;
 import java.awt.Color;
